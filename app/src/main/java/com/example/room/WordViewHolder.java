@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.room.databinding.ActivityNewWordBinding;
 import com.example.room.databinding.RecyclerviewItemBinding;
 
 public class WordViewHolder extends RecyclerView.ViewHolder {
