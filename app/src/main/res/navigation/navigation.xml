@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.room.MainFragment"
-        android:label="MainFragment"
+        android:label="TODO一覧"
         tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainFragment_to_newWordFragment"
@@ -18,10 +18,25 @@
     <fragment
         android:id="@+id/newWordFragment"
         android:name="com.example.room.NewWordFragment"
-        android:label="NewWordFragment"
+        android:label="新規作成"
         tools:layout="@layout/fragment_new_word" >
         <action
             android:id="@+id/action_newWordFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/completeWordFragment"
+        android:name="com.example.room.CompleteWordFragment"
+        android:label="完了一覧"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_completeWordFragment"
+            app:destination="@id/completeWordFragment" />
+        <action
+            android:id="@+id/action_completeWordFragment_to_mainFragment"
             app:destination="@id/mainFragment"
             app:popUpTo="@id/mainFragment"
             app:popUpToInclusive="true"/>

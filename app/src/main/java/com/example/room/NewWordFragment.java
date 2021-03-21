@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import androidx.navigation.Navigation;
 import com.example.room.databinding.FragmentNewWordBinding;
 
 public class NewWordFragment extends Fragment {
+    private static final String TAG = "NewWordFragment";
     private EditText mEditWordView;
     private FragmentNewWordBinding binding;
     private WordViewModel mWordViewModel;
@@ -30,11 +32,12 @@ public class NewWordFragment extends Fragment {
         View layoutView = binding.getRoot();
         mEditWordView = binding.editWord;
 
-        mWordViewModel = new ViewModelProvider(this.requireActivity(),
-                ViewModelProvider.AndroidViewModelFactory.getInstance(this.requireActivity().getApplication())).get(WordViewModel.class);
+        WordViewModelFactory factory = new WordViewModelFactory(requireActivity().getApplication(), false);
+        mWordViewModel = new ViewModelProvider(this, factory).get(WordViewModel.class);
         binding.buttonSave.setOnClickListener(buttonView -> {
             Intent replyIntent = new Intent();
             String data = mEditWordView.getText().toString();
+            Log.d(TAG, data);
             if (TextUtils.isEmpty(mEditWordView.getText())) {
                 //失敗トースト表示
                 Toast.makeText(
@@ -43,7 +46,7 @@ public class NewWordFragment extends Fragment {
                         Toast.LENGTH_LONG).show();
             } else {
                 //保存処理
-                Word word = new Word(data);
+                Word word = new Word(data, false);
                 mWordViewModel.insert(word);
 
                 //IME閉じる

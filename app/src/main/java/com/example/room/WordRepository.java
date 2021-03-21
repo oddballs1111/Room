@@ -14,10 +14,10 @@ public class WordRepository {
     // dependency. This adds complexity and much more code, and this sample is not about testing.
     // See the BasicSample in the android-architecture-components repository at
     // https://github.com/googlesamples
-    WordRepository(Application application) {
+    WordRepository(Application application, boolean completeFlag) {
         WordRoomDatabase db = WordRoomDatabase.getDatabase(application);
         mWordDao = db.wordDao();
-        mAllWords = mWordDao.getAlphabetizedWords();
+        mAllWords = mWordDao.getAlphabetizedWords(completeFlag);
     }
 
     // Room executes all queries on a separate thread.
@@ -32,5 +32,12 @@ public class WordRepository {
         WordRoomDatabase.databaseWriteExecutor.execute(() -> {
             mWordDao.insert(word);
         });
+    }
+
+    void update(Word word) {
+        WordRoomDatabase.databaseWriteExecutor.execute(() -> {
+            mWordDao.update(word);
+        });
+
     }
 }

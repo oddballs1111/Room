@@ -1,24 +1,18 @@
 package com.example.room;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.room.databinding.ActivityMainBinding;
 import com.example.room.databinding.FragmentMainBinding;
 
-public class MainFragment extends Fragment implements OnItemClickListener{
+public class CompleteWordFragment extends Fragment implements OnItemClickListener {
     private WordViewModel mWordViewModel;
     private FragmentMainBinding binding;
 
@@ -29,7 +23,6 @@ public class MainFragment extends Fragment implements OnItemClickListener{
         return layoutView;
     }
 
-    @SuppressLint("FragmentLiveDataObserve")
     @Override
     public void onViewCreated(View layoutView, Bundle savedInstanceState) {
         super.onViewCreated(layoutView, savedInstanceState);
@@ -39,24 +32,14 @@ public class MainFragment extends Fragment implements OnItemClickListener{
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.requireActivity()));
 
-        WordViewModelFactory factory = new WordViewModelFactory(requireActivity().getApplication(), false);
-        mWordViewModel = new ViewModelProvider(this, factory).get(WordViewModel.class);
-        mWordViewModel.getAllWords().observe(this, words -> {
+        WordViewModelFactory factory = new WordViewModelFactory(requireActivity().getApplication(), true);
+        mWordViewModel = new ViewModelProvider(this.requireActivity(), factory).get(WordViewModel.class);
+        mWordViewModel.getAllWords().observe(getViewLifecycleOwner(), words -> {
             // Update the cached copy of the words in the adapter.
             adapter.submitList(words);
         });
 
-        binding.fab.setOnClickListener( fabView -> {
-            Navigation.findNavController(fabView).navigate(R.id.action_mainFragment_to_newWordFragment);
-//            FragmentManager fragmentManager = requireFragmentManager();
-//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//            NewWordFragment fragment = new NewWordFragment();
-//            fragmentTransaction.replace(R.id.mainFragment, fragment);
-//            fragmentTransaction.addToBackStack(null);
-//            fragmentTransaction.commit();
-        });
-
-
+        binding.fab.setVisibility(View.INVISIBLE);
     }
 
     @Override
