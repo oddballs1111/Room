@@ -1,26 +1,33 @@
 package com.example.room;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.room.databinding.ActivityMainBinding;
 import com.example.room.databinding.FragmentMainBinding;
 
 public class MainFragment extends Fragment implements OnItemClickListener{
     private WordViewModel mWordViewModel;
     private FragmentMainBinding binding;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,7 +47,7 @@ public class MainFragment extends Fragment implements OnItemClickListener{
         recyclerView.setLayoutManager(new LinearLayoutManager(this.requireActivity()));
 
         WordViewModelFactory factory = new WordViewModelFactory(requireActivity().getApplication(), false);
-        mWordViewModel = new ViewModelProvider(this, factory).get(WordViewModel.class);
+        mWordViewModel = new ViewModelProvider(requireActivity(), factory).get(WordViewModel.class);
         mWordViewModel.getAllWords().observe(this, words -> {
             // Update the cached copy of the words in the adapter.
             adapter.submitList(words);
@@ -57,6 +64,19 @@ public class MainFragment extends Fragment implements OnItemClickListener{
         });
 
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.todo_options, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.mainFragment);
+        return NavigationUI.onNavDestinationSelected(item, navController)
+                || super.onOptionsItemSelected(item);
     }
 
     @Override

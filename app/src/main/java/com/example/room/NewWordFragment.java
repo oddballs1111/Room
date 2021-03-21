@@ -33,7 +33,7 @@ public class NewWordFragment extends Fragment {
         mEditWordView = binding.editWord;
 
         WordViewModelFactory factory = new WordViewModelFactory(requireActivity().getApplication(), false);
-        mWordViewModel = new ViewModelProvider(this, factory).get(WordViewModel.class);
+        mWordViewModel = new ViewModelProvider(requireActivity(), factory).get(WordViewModel.class);
         binding.buttonSave.setOnClickListener(buttonView -> {
             Intent replyIntent = new Intent();
             String data = mEditWordView.getText().toString();
