@@ -23,6 +23,7 @@ import com.google.android.material.navigation.NavigationView;
 public class MainActivity extends AppCompatActivity {
     private WordViewModel mWordViewModel;
     private ActivityMainBinding binding;
+    private NavController mNavController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,22 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        BottomNavigationView navigaionView = binding.buttomnNavigation;
+        navigaionView.setOnNavigationItemSelectedListener(navListener);
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mNavController = Navigation.findNavController(this, R.id.mainFragment);
+    }
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    return NavigationUI.onNavDestinationSelected(item, mNavController);
+
+                }
+            };
 }
