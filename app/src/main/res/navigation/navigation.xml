@@ -5,6 +5,13 @@
     android:id="@+id/navigation"
     app:startDestination="@id/mainFragment">
 
+    <action
+        android:id="@+id/action_mainFragment_to_completeWordFragment"
+        app:destination="@id/completeWordNavigation"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true" />
+
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.room.MainFragment"
@@ -19,26 +26,27 @@
         android:id="@+id/newWordFragment"
         android:name="com.example.room.NewWordFragment"
         android:label="新規作成"
-        tools:layout="@layout/fragment_new_word" >
+        tools:layout="@layout/fragment_new_word">
         <action
             android:id="@+id/action_newWordFragment_to_mainFragment"
             app:destination="@id/mainFragment"
             app:popUpTo="@id/mainFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="todo_word"
+            android:defaultValue="@null"
+            app:nullable="true"
+            app:argType="com.example.room.Word" />
     </fragment>
 
-    <fragment
-        android:id="@+id/completeWordFragment"
-        android:name="com.example.room.CompleteWordFragment"
-        android:label="完了一覧"
-        tools:layout="@layout/fragment_main" >
-        <action
-            android:id="@+id/action_mainFragment_to_completeWordFragment"
-            app:destination="@id/completeWordFragment" />
-        <action
-            android:id="@+id/action_completeWordFragment_to_mainFragment"
-            app:destination="@id/mainFragment"
-            app:popUpTo="@id/mainFragment"
-            app:popUpToInclusive="true"/>
-    </fragment>
+    <navigation
+        android:id="@+id/completeWordNavigation"
+        app:startDestination="@id/completeWordFragment">
+        <fragment
+            android:id="@+id/completeWordFragment"
+            android:name="com.example.room.CompleteWordFragment"
+            android:label="完了一覧"
+            tools:layout="@layout/fragment_main" >
+        </fragment>
+    </navigation>
 </navigation>

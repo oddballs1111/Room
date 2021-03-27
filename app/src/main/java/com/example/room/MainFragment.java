@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room.databinding.FragmentMainBinding;
 
-public class MainFragment extends Fragment implements OnItemClickListener{
+public class MainFragment extends Fragment implements OnItemClickListener, OnTodoNameClickListener{
     private WordViewModel mWordViewModel;
     private FragmentMainBinding binding;
 
@@ -42,7 +42,8 @@ public class MainFragment extends Fragment implements OnItemClickListener{
         super.onViewCreated(layoutView, savedInstanceState);
         RecyclerView recyclerView = binding.recyclerview;
         final WordListAdapter adapter = new WordListAdapter(new WordListAdapter.WordDiff());
-        adapter.setmOnItemClickLisetner(this);
+        adapter.setOnItemClickListener(this);
+        adapter.setOnTodoNameClickListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.requireActivity()));
 
@@ -55,28 +56,9 @@ public class MainFragment extends Fragment implements OnItemClickListener{
 
         binding.fab.setOnClickListener( fabView -> {
             Navigation.findNavController(fabView).navigate(R.id.action_mainFragment_to_newWordFragment);
-//            FragmentManager fragmentManager = requireFragmentManager();
-//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//            NewWordFragment fragment = new NewWordFragment();
-//            fragmentTransaction.replace(R.id.mainFragment, fragment);
-//            fragmentTransaction.addToBackStack(null);
-//            fragmentTransaction.commit();
         });
 
 
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.todo_options, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        NavController navController = Navigation.findNavController(requireActivity(), R.id.mainFragment);
-        return NavigationUI.onNavDestinationSelected(item, navController)
-                || super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -88,5 +70,14 @@ public class MainFragment extends Fragment implements OnItemClickListener{
     @Override
     public void onCompleteFlagChange(Word word) {
         mWordViewModel.update(word);
+    }
+
+    @Override
+    public void onClick(View view, Word word) {
+        //更新対象のwordを渡す
+        MainFragmentDirections.ActionMainFragmentToNewWordFragment action =
+                MainFragmentDirections.actionMainFragmentToNewWordFragment();
+        action.setTodoWord(word);
+        Navigation.findNavController(view).navigate(action);
     }
 }

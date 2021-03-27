@@ -6,6 +6,8 @@ android {
     compileSdkVersion 30
     buildToolsVersion "29.0.3"
 
+    apply plugin: "androidx.navigation.safeargs"
+
     buildFeatures {
         viewBinding true
     }
@@ -31,6 +33,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
+
 
 dependencies {
     def nav_version = "2.3.3"

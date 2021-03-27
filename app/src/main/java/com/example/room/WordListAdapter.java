@@ -1,9 +1,11 @@
 package com.example.room;
 
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
@@ -11,16 +13,20 @@ import androidx.recyclerview.widget.ListAdapter;
 
 public class WordListAdapter extends ListAdapter<Word, WordViewHolder> {
     private final String TAG = "WordListAdapter";
-    private OnItemClickListener mOnItemClickLisetner;
+    private OnItemClickListener mOnItemClickListener = null;
+    private OnTodoNameClickListener mTodoNameClickListener = null;
 
     public WordListAdapter(@NonNull DiffUtil.ItemCallback<Word> diffCallback) {
         super(diffCallback);
     }
 
-    public void setmOnItemClickLisetner(OnItemClickListener onItemClickLisetner) {
-        mOnItemClickLisetner = onItemClickLisetner;
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
     }
 
+    public void setOnTodoNameClickListener(OnTodoNameClickListener onTodoNameClickListener) {
+        mTodoNameClickListener = onTodoNameClickListener;
+    }
     @Override
     public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return WordViewHolder.create(parent);
@@ -39,7 +45,16 @@ public class WordListAdapter extends ListAdapter<Word, WordViewHolder> {
                 completeCheckBox.setOnCheckedChangeListener(null);
                 current.setCompleteFlag(isChecked);
                 //押下された事をもってDBの更新処理を行う
-                mOnItemClickLisetner.onCompleteFlagChange(current);
+                mOnItemClickListener.onCompleteFlagChange(current);
+            }
+        });
+
+        TextView todoName = holder.getTodoTextView();
+        todoName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TextViewのクリックによりTodo名称の変更処理を行う
+                mTodoNameClickListener.onClick(v, current);
             }
         });
     }

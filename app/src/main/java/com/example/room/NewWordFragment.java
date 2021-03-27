@@ -12,12 +12,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.room.databinding.FragmentNewWordBinding;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class NewWordFragment extends Fragment {
     private static final String TAG = "NewWordFragment";
@@ -30,40 +32,25 @@ public class NewWordFragment extends Fragment {
         super.onCreate(savedInstanceState);
         binding = FragmentNewWordBinding.inflate(inflater, container, false);
         View layoutView = binding.getRoot();
-        mEditWordView = binding.editWord;
 
         WordViewModelFactory factory = new WordViewModelFactory(requireActivity().getApplication(), false);
         mWordViewModel = new ViewModelProvider(requireActivity(), factory).get(WordViewModel.class);
-        binding.buttonSave.setOnClickListener(buttonView -> {
-            Intent replyIntent = new Intent();
-            String data = mEditWordView.getText().toString();
-            Log.d(TAG, data);
-            if (TextUtils.isEmpty(mEditWordView.getText())) {
-                //失敗トースト表示
-                Toast.makeText(
-                        requireContext(),
-                        R.string.empty_not_saved,
-                        Toast.LENGTH_LONG).show();
-            } else {
-                //保存処理
-                Word word = new Word(data, false);
-                mWordViewModel.insert(word);
-
-                //IME閉じる
-                InputMethodManager inputManager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputManager.hideSoftInputFromWindow(binding.editWord.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-
-                //画面遷移
-                Navigation.findNavController(buttonView).navigate(R.id.action_newWordFragment_to_mainFragment);
-//                FragmentManager fragmentManager = requireFragmentManager();
-//                fragmentManager.popBackStack();
-
-            }
-        });
+        binding.buttonSave.setOnClickListener(this::onClick);
 
         return layoutView;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mEditWordView = binding.editWord;
+        Word todoWord = NewWordFragmentArgs.fromBundle(getArguments()).getTodoWord();
+        if(todoWord != null) {
+            Log.d("TAG", "todoName = " + todoWord.getWord());
+            mEditWordView.setText(todoWord.getWord());
+        }
+
+    }
     @Override
     public void onStart() {
         super.onStart();
@@ -78,5 +65,37 @@ public class NewWordFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private void onClick(View buttonView) {
+        Intent replyIntent = new Intent();
+        String data = mEditWordView.getText().toString();
+        Log.d(TAG, data);
+        if (TextUtils.isEmpty(data)) {
+            //失敗トースト表示
+            Toast.makeText(
+                    requireContext(),
+                    R.string.empty_not_saved,
+                    Toast.LENGTH_LONG).show();
+        } else {
+            AtomicReference<Word> todoWord = new AtomicReference<>(NewWordFragmentArgs.fromBundle(getArguments()).getTodoWord());
+            if (todoWord.get() == null) {
+                //WordがArgumentに入ってない場合はinsert処理
+                todoWord.set(new Word(data, false));
+                mWordViewModel.insert(todoWord.get());
+            } else {
+                //WordがArgumentに入っている場合はUpdate処理
+                todoWord.get().setWord(data);
+                mWordViewModel.update(todoWord.get());
+            }
+
+            //IME閉じる
+            InputMethodManager inputManager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(binding.editWord.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+            //画面遷移
+            Navigation.findNavController(buttonView).navigate(R.id.action_newWordFragment_to_mainFragment);
+
+        }
     }
 }

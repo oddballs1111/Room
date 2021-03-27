@@ -40,7 +40,7 @@ public class CompleteWordFragment extends Fragment implements OnItemClickListene
         super.onViewCreated(layoutView, savedInstanceState);
         RecyclerView recyclerView = binding.recyclerview;
         final WordListAdapter adapter = new WordListAdapter(new WordListAdapter.WordDiff());
-        adapter.setmOnItemClickLisetner(this);
+        adapter.setOnItemClickListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.requireActivity()));
 
@@ -54,18 +54,18 @@ public class CompleteWordFragment extends Fragment implements OnItemClickListene
         binding.fab.setVisibility(View.INVISIBLE);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.complete_options, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        NavController navController = Navigation.findNavController(requireActivity(), R.id.mainFragment);
-        return NavigationUI.onNavDestinationSelected(item, navController)
-                || super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        inflater.inflate(R.menu.complete_options, menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        NavController navController = Navigation.findNavController(requireActivity(), R.id.mainFragment);
+//        return NavigationUI.onNavDestinationSelected(item, navController)
+//                || super.onOptionsItemSelected(item);
+//    }
 
     @Override
     public void onDestroyView() {

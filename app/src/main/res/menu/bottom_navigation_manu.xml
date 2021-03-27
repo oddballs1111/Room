@@ -7,7 +7,7 @@
         android:title="@string/todo_list"
         android:icon="@drawable/ic_baseline_playlist_add_24"/>
     <item
-        android:id="@+id/completeWordFragment"
+        android:id="@+id/action_mainFragment_to_completeWordFragment"
         android:title="@string/complete_list"
         android:icon="@drawable/ic_baseline_delete_outline_24"/>
 </menu>
