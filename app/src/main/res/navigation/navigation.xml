@@ -14,21 +14,36 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.room.ui.fragment.MainFragment"
+        android:name="com.example.room.ui.fragment.TodoListFragment"
         android:label="TODO一覧"
         tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainFragment_to_newWordFragment"
             app:destination="@id/newWordFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_existEditWordFragment"
+            app:destination="@id/existEditWordFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/newWordFragment"
         android:name="com.example.room.ui.fragment.NewWordFragment"
         android:label="新規作成"
-        tools:layout="@layout/fragment_new_word">
+        tools:layout="@layout/fragment_edit_word">
         <action
             android:id="@+id/action_newWordFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/existEditWordFragment"
+        android:name="com.example.room.ui.fragment.ExistEditWordFragment"
+        android:label="新規作成"
+        tools:layout="@layout/fragment_edit_word">
+        <action
+            android:id="@+id/action_existEditWordFragment_to_mainFragment"
             app:destination="@id/mainFragment"
             app:popUpTo="@id/mainFragment"
             app:popUpToInclusive="true" />
@@ -44,7 +59,7 @@
         app:startDestination="@id/completeWordFragment">
         <fragment
             android:id="@+id/completeWordFragment"
-            android:name="com.example.room.ui.fragment.CompleteWordFragment"
+            android:name="com.example.room.ui.fragment.CompleteListFragment"
             android:label="完了一覧"
             tools:layout="@layout/fragment_main" >
         </fragment>

@@ -60,7 +60,9 @@ public class WordListAdapter extends ListAdapter<Word, WordViewHolder> {
             @Override
             public void onClick(View v) {
                 //TextViewのクリックによりTodo名称の変更処理を行う
-                mTodoNameClickListener.onClick(v, current);
+                if(mTodoNameClickListener != null) {
+                    mTodoNameClickListener.onClick(v, current);
+                }
             }
         });
     }
