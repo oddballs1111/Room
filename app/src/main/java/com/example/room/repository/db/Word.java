@@ -1,4 +1,4 @@
-package com.example.room;
+package com.example.room.repository.db;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -13,52 +13,40 @@ public class Word implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    private int mId = 0;
+    public int id = 0;
 
     @NonNull
     @ColumnInfo(name = "word")
-    private String mWord;
+    public String word;
 
     @ColumnInfo(name = "complete_flag")
-    private boolean mCompleteFlag;
+    public boolean completeFlag;
 
     public Word(@NonNull String word, boolean completeFlag) {
-        this.mWord = word;
-        mCompleteFlag = completeFlag;
+        this.word = word;
+        this.completeFlag = completeFlag;
     }
 
-    public int getId(){
-        return this.mId;
-    }
+    public static final Creator<Word> CREATOR = new Creator<Word>() {
+        @Override
+        public Word createFromParcel(Parcel in) {
+            return new Word(in);
+        }
 
-    public String getWord(){
-        return this.mWord;
-    }
-
-    public boolean getCompleteFlag(){
-        return this.mCompleteFlag;
-    }
-
-    public void setId(int id) {
-        mId = id;
-    }
-
-    public void setWord(String word) {
-        mWord = word;
-    }
-
-    public void setCompleteFlag(boolean completeFlag) {
-        mCompleteFlag = completeFlag;
-    }
+        @Override
+        public Word[] newArray(int size) {
+            return new Word[size];
+        }
+    };
 
     /**
      * Fragment間のArgumentにいれるため、Parcelable処理を投入
      * @param in
      */
     private Word(Parcel in) {
-        mId = in.readInt();
-        mWord = in.readString();
-        mCompleteFlag = in.readByte() != 0;
+        id = in.readInt();
+        word = in.readString();
+        completeFlag = in.readByte() != 0;
     }
 
     /**
@@ -77,8 +65,8 @@ public class Word implements Parcelable {
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(mId);
-        dest.writeString(mWord);
-        dest.writeByte((byte) (mCompleteFlag ? 1 : 0));
+        dest.writeInt(id);
+        dest.writeString(word);
+        dest.writeByte((byte) (completeFlag ? 1 : 0));
     }
 }

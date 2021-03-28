@@ -1,25 +1,27 @@
-package com.example.room;
+package com.example.room.ui.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.room.OnItemClickListener;
+import com.example.room.OnTodoNameClickListener;
+import com.example.room.R;
+import com.example.room.repository.db.Word;
+import com.example.room.ui.adapter.WordListAdapter;
+import com.example.room.viewmodel.WordViewModel;
+import com.example.room.viewmodel.factory.WordViewModelFactory;
 import com.example.room.databinding.FragmentMainBinding;
 
-public class MainFragment extends Fragment implements OnItemClickListener, OnTodoNameClickListener{
+public class MainFragment extends Fragment implements OnItemClickListener, OnTodoNameClickListener {
     private WordViewModel mWordViewModel;
     private FragmentMainBinding binding;
 

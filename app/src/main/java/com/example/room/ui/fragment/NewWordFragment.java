@@ -1,4 +1,4 @@
-package com.example.room;
+package com.example.room.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +17,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.example.room.R;
+import com.example.room.repository.db.Word;
+import com.example.room.viewmodel.WordViewModel;
+import com.example.room.viewmodel.factory.WordViewModelFactory;
 import com.example.room.databinding.FragmentNewWordBinding;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -46,8 +50,8 @@ public class NewWordFragment extends Fragment {
         mEditWordView = binding.editWord;
         Word todoWord = NewWordFragmentArgs.fromBundle(getArguments()).getTodoWord();
         if(todoWord != null) {
-            Log.d("TAG", "todoName = " + todoWord.getWord());
-            mEditWordView.setText(todoWord.getWord());
+            Log.d("TAG", "todoName = " + todoWord.word);
+            mEditWordView.setText(todoWord.word);
         }
 
     }
@@ -85,7 +89,7 @@ public class NewWordFragment extends Fragment {
                 mWordViewModel.insert(todoWord.get());
             } else {
                 //WordがArgumentに入っている場合はUpdate処理
-                todoWord.get().setWord(data);
+                todoWord.get().word = data;
                 mWordViewModel.update(todoWord.get());
             }
 

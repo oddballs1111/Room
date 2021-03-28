@@ -1,10 +1,12 @@
-package com.example.room;
+package com.example.room.viewmodel.factory;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.example.room.viewmodel.WordViewModel;
 
 public class WordViewModelFactory extends ViewModelProvider.AndroidViewModelFactory {
     private Application mApplication;

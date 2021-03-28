@@ -14,7 +14,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.room.MainFragment"
+        android:name="com.example.room.ui.fragment.MainFragment"
         android:label="TODO一覧"
         tools:layout="@layout/fragment_main" >
         <action
@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/newWordFragment"
-        android:name="com.example.room.NewWordFragment"
+        android:name="com.example.room.ui.fragment.NewWordFragment"
         android:label="新規作成"
         tools:layout="@layout/fragment_new_word">
         <action
@@ -36,7 +36,7 @@
             android:name="todo_word"
             android:defaultValue="@null"
             app:nullable="true"
-            app:argType="com.example.room.Word" />
+            app:argType="com.example.room.repository.db.Word" />
     </fragment>
 
     <navigation
@@ -44,7 +44,7 @@
         app:startDestination="@id/completeWordFragment">
         <fragment
             android:id="@+id/completeWordFragment"
-            android:name="com.example.room.CompleteWordFragment"
+            android:name="com.example.room.ui.fragment.CompleteWordFragment"
             android:label="完了一覧"
             tools:layout="@layout/fragment_main" >
         </fragment>

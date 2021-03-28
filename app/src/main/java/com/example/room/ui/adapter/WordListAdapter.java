@@ -1,4 +1,4 @@
-package com.example.room;
+package com.example.room.ui.adapter;
 
 import android.util.Log;
 import android.view.View;
@@ -10,6 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
+
+import com.example.room.OnItemClickListener;
+import com.example.room.OnTodoNameClickListener;
+import com.example.room.repository.db.Word;
+import com.example.room.viewmodel.viewholder.WordViewHolder;
 
 public class WordListAdapter extends ListAdapter<Word, WordViewHolder> {
     private final String TAG = "WordListAdapter";
@@ -35,7 +40,7 @@ public class WordListAdapter extends ListAdapter<Word, WordViewHolder> {
     @Override
     public void onBindViewHolder(WordViewHolder holder, int position) {
         Word current = getItem(position);
-        holder.bind(current.getWord(), current.getCompleteFlag());
+        holder.bind(current.word, current.completeFlag);
 
         CheckBox completeCheckBox = holder.getCompleteCheckBox();
         completeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -43,7 +48,8 @@ public class WordListAdapter extends ListAdapter<Word, WordViewHolder> {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Log.d(TAG, "buttonView = " + buttonView + "isChecked = " + isChecked);
                 completeCheckBox.setOnCheckedChangeListener(null);
-                current.setCompleteFlag(isChecked);
+                current.completeFlag = isChecked;
+
                 //押下された事をもってDBの更新処理を行う
                 mOnItemClickListener.onCompleteFlagChange(current);
             }
@@ -59,7 +65,7 @@ public class WordListAdapter extends ListAdapter<Word, WordViewHolder> {
         });
     }
 
-    static class WordDiff extends DiffUtil.ItemCallback<Word> {
+    public static class WordDiff extends DiffUtil.ItemCallback<Word> {
 
         @Override
         public boolean areItemsTheSame(@NonNull Word oldItem, @NonNull Word newItem) {
@@ -68,7 +74,7 @@ public class WordListAdapter extends ListAdapter<Word, WordViewHolder> {
 
         @Override
         public boolean areContentsTheSame(@NonNull Word oldItem, @NonNull Word newItem) {
-            return oldItem.getWord().equals(newItem.getWord());
+            return oldItem.word.equals(newItem.word);
         }
     }
 }
